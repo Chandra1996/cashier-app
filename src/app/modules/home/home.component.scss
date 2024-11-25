@@ -1,0 +1,40 @@
+::ng-deep.custom-tab-group .mat-tab-label {
+    background-color: #E0D8D9 !important;
+    color: #3b3b3b;
+    transition: background-color 0.3s, color 0.3s;
+    border-left: 2px solid #ffffff;
+}
+
+
+
+::ng-deep.custom-tab-group .mat-tab-header {
+    background-color: #E0D8D9 !important;
+    color: #616161 !important;
+}
+
+::ng-deep .mat-tab-group.mat-background-primary>.mat-tab-header {
+    // background-color: #E0D8D9 !important;
+    color: #040404 !important;
+}
+
+::ng-deep.custom-tab-group .mat-tab-label.mat-tab-label-active {
+    background-color: #AE99C3 !important;
+    color: #ffffff !important;
+}
+
+::ng-deep .mat-tab-header-pagination {
+    background-color: #ffffff !important;
+}
+
+::ng-deep .mat-tab-group.mat-background-primary>.mat-tab-header .mat-tab-header-pagination-chevron {
+    border-color: black !important;
+}
+
+.currentTab {
+    background-color: #F0F0F0;
+    color: #5B6173;
+    font-weight: bold;
+    border: 2px solid #ffffff;
+    padding: 2px;
+}
+

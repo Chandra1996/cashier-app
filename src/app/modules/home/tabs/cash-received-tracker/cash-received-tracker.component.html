@@ -1,0 +1,95 @@
+<div class="container">
+    <div class="formfieldsDiv">
+        <mat-form-field class="formfield" appearance="outline">
+            <mat-label>Financial Year</mat-label>
+            <mat-select [value]="'24-25'">
+                <mat-option value="24-25">2024-25</mat-option>
+                <mat-option value="25-26">2025-26</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="formfield" appearance="outline">
+            <mat-label>From</mat-label>
+            <input matInput [matDatepicker]="picker">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field class="formfield" appearance="outline">
+            <mat-label>To</mat-label>
+            <input matInput [matDatepicker]="picker1">
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
+
+        <button class="searchBtn" mat-raised-button color="primary">Search</button>
+
+    </div>
+
+    <div class="downloadOptions">
+        <img src="../../../../assets/icons/xcel-icon.png" alt="">
+        <img src="../../../../assets/icons/pdf-icon.png" alt="">
+    </div>
+
+    <div>
+        <table class="tracker-table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Date</th>
+                    <th>Bill Manager</th>
+                    <th>Counter Type</th>
+                    <th>Counter Name</th>
+                    <th>User Sessions</th>
+                    <th>Users</th>
+                    <th>User Session Status</th>
+                    <th>System Cash Closing Balance</th>
+                    <th>Cash Received Amount</th>
+                    <th>Variance</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let record of cashRecords; let i = index">
+                    <tr>
+                        <td>
+                            <span class="datePlusBtn"
+                                [ngClass]="{ 'minusBtn': isRowExpanded(record.date), 'plusBtn': !isRowExpanded(record.date) }"
+                                (click)="toggleRow(record.date)">
+                                {{ isRowExpanded(record.date) ? '-' : '+' }}
+                            </span>
+                        </td>
+                        <td>{{ record.date | date:'dd/MM/yyyy'}}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>{{ record?.cashDetails?.sysCashClosingBalance }}</td>
+                        <td>{{ record?.cashDetails?.cashRcvAmt }}</td>
+                        <td>{{ record?.cashDetails?.varience }}</td>
+                        <td>{{ record?.status }}</td>
+                    </tr>
+                    <ng-container *ngIf="isRowExpanded(record.date)">
+                        <tr *ngFor="let managerItem of record.billManagers; let bi = index">
+                            <td><span class="mangerPlusBtn">+</span></td>
+                            <td></td>
+                            <td>{{ managerItem?.name }}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>{{ managerItem.sysCashClosingBalance }}</td>
+                            <td>{{ managerItem.cashRcvAmt }}</td>
+                            <td>{{ managerItem.varience }}</td>
+                            <td></td>
+                        </tr>
+                    </ng-container>
+
+                </ng-container>
+            </tbody>
+        </table>
+    </div>
+</div>

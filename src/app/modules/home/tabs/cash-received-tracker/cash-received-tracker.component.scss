@@ -1,0 +1,77 @@
+.container{
+    width: 100%;
+    overflow-x: auto;
+}
+.formfieldsDiv {
+    display: flex;
+
+    .formfield {
+        margin-right: 20px;
+    }
+}
+
+.searchBtn {
+    height: 40px;
+    margin-top: 3px;
+}
+
+.downloadOptions {
+    height: 25px;
+    background-color: #EBEBED;
+    margin-top: -21px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    img {
+        cursor: pointer;
+        ;
+        width: 20px;
+        height: 20px;
+        margin-right: 10px;
+    }
+}
+
+.tracker-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tracker-table th,
+.tracker-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.tracker-table th {
+    background-color: #C5E8EB;
+    color: #6a6a6a;
+    border: 1px solid #fff;
+}
+
+.datePlusBtn {
+    background-color: blue;
+    color: white;
+    padding: 2px 10px;
+    cursor: pointer;
+}
+
+.mangerPlusBtn {
+    background-color: green;
+    color: white;
+    padding: 2px 10px;
+    cursor: pointer;
+}
+
+
+
+.datePlusBtn.minusBtn {
+    background-color: rgb(150, 0, 0);
+    padding: 2px 12px;
+}
+
+.datePlusBtn.plusBtn {
+    background-color: blue;
+}
+

@@ -1,0 +1,22 @@
+<div>
+    <mat-tab-group [color]="'accent'" (selectedIndexChange)="onTabChange($event)" class="custom-tab-group">
+        <mat-tab *ngFor="let tab of tabs" [label]="tab"></mat-tab>
+    </mat-tab-group>
+
+    <p class="currentTab">
+        {{currentTab}}
+    </p>
+
+    <div [ngSwitch]="currentTab">
+        <!-- Case for Cash Tracker -->
+        <div *ngSwitchCase="'Cashier Cash Received Tracker'">
+            <app-cash-received-tracker></app-cash-received-tracker>
+        </div>
+       
+
+        <!-- Default Case -->
+        <div *ngSwitchDefault>
+            <p>Demo page.</p>
+        </div>
+    </div>
+</div>
