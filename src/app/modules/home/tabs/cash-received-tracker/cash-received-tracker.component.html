@@ -72,20 +72,53 @@
                         <td>{{ record?.status }}</td>
                     </tr>
                     <ng-container *ngIf="isRowExpanded(record.date)">
-                        <tr *ngFor="let managerItem of record.billManagers; let bi = index">
-                            <td><span class="mangerPlusBtn">+</span></td>
-                            <td></td>
-                            <td>{{ managerItem?.name }}</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td>{{ managerItem.sysCashClosingBalance }}</td>
-                            <td>{{ managerItem.cashRcvAmt }}</td>
-                            <td>{{ managerItem.varience }}</td>
-                            <td></td>
-                        </tr>
+                        <ng-container *ngFor="let managerItem of record.billManagers; let bi = index">
+                            <tr>
+                                <td>
+                                    <span class="mangerPlusBtn" (click)="toggleNestedRow(record.date,managerItem?.name)"
+                                        [ngClass]="{ 'minusBtn': isNestedRowExpanded(record.date, managerItem?.name), 'plusBtn': !isNestedRowExpanded(record.date, managerItem?.name) }">
+                                        {{ isNestedRowExpanded(record.date, managerItem?.name) ? '-' : '+' }}
+                                    </span>
+                                </td>
+                                <td></td>
+                                <td>{{ managerItem?.name }}</td>
+                                <td>{{ managerItem?.counterType }}</td>
+                                <td>{{ managerItem?.counterName }}</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>{{ managerItem.sysCashClosingBalance }}</td>
+                                <td>{{ managerItem.cashRcvAmt }}</td>
+                                <td>{{ managerItem.varience }}</td>
+                                <td></td>
+                            </tr>
+                            <ng-container *ngIf="isNestedRowExpanded(record.date,managerItem?.name)">
+                                <ng-container *ngFor="let nestedItemItem of managerItem.nestedData; let ni = index">
+                                    <tr>
+                                        <td>
+                                            <span class="mangerPlusBtn" (click)="toggleNestedRow(record.date,managerItem?.name)"
+                                                [ngClass]="{ 'minusBtn': isNestedRowExpanded(record.date, managerItem?.name), 'plusBtn': !isNestedRowExpanded(record.date, managerItem?.name) }">
+                                                {{ isNestedRowExpanded(record.date, managerItem?.name) ? '-' : '+' }}
+                                            </span>
+                                        </td>
+                                        <td></td>
+                                        <td>{{ nestedItemItem?.name }}</td>
+                                        <td>{{ nestedItemItem?.counterType }}</td>
+                                        <td>{{ nestedItemItem?.counterName }}</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>{{ nestedItemItem.sysCashClosingBalance }}</td>
+                                        <td>{{ nestedItemItem.cashRcvAmt }}</td>
+                                        <td>{{ nestedItemItem.varience }}</td>
+                                        <td></td>
+                                    </tr>
+
+                                </ng-container>
+
+                            </ng-container>
+                        </ng-container>
+
                     </ng-container>
 
                 </ng-container>

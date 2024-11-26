@@ -12,8 +12,9 @@ export class CashReceivedTrackerComponent implements OnInit {
     private sharedService: SharedService
   ) { }
   cashRecords: any = [];
-  expandedRows: { [key: string]: boolean } = {};
-  
+
+  expandedRows: { [key: string]: { isActive: boolean; nested: { [key: string]: boolean } } } = {};
+
   ngOnInit(): void {
     this.getFilterData();
   }
@@ -23,24 +24,32 @@ export class CashReceivedTrackerComponent implements OnInit {
     const payload = {
       financialYearId: 3,
       btn_name: "TRACKER",
-      fromDate: "2024-11-25T07:54:05.537Z",
-      toDate: "2024-11-25T07:54:05.537Z",
+      fromDate: "2024-11-26T07:54:05.537Z",
+      toDate: "2024-11-26T07:54:05.537Z",
+      // fromDate: "2024-11-25T07:54:05.537Z",
+      // toDate: "2024-11-25T07:54:05.537Z",
       businessAreaId: "1",
     };
 
     this.sharedService.getData(apiUrl, payload).subscribe((data: any) => {
-      console.log(data);
       this.cashRecords = this.groupDataByDate(data);
-      console.log(this.cashRecords);
-
-    })
+    },
+      (error) => {
+        console.error(error)
+      })
   }
+
+
 
   groupDataByDate(data: any) {
     let groupedData: any = {};
 
+    console.log(data);
     data.forEach((item: any) => {
       if (!groupedData?.[item?.transactionDate]) {
+        if (!this.expandedRows?.[item?.transactionDate]) {
+          this.expandedRows[item?.transactionDate] = { isActive: false, nested: {} }
+        }
         groupedData[item?.transactionDate] = {
           cashDetails: {
             sysCashClosingBalance: 0,
@@ -56,15 +65,26 @@ export class CashReceivedTrackerComponent implements OnInit {
       groupedData[item.transactionDate].cashDetails.varience += parseFloat(item.varience);
 
       if (item.billManager && !groupedData[item.transactionDate].billManagers.some((bm: any) => bm.name === item.billManager)) {
+        let nestedData: any = [];
+        try {
+          const firstLevel = data.find((infoObj: any) => infoObj.parentLink === item.billManager);
+          const secondLevel = firstLevel ? data.find((infoObj: any) => infoObj.parentLink === firstLevel.counterType) : undefined;
+          nestedData = [firstLevel, secondLevel];
+        } catch (error) {
+          console.error("Error in nested data computation:", error);
+        }
+
+        this.expandedRows[item?.transactionDate].nested[item.billManager] = false
         groupedData[item.transactionDate].billManagers.push({
           name: item.billManager,
           sysCashClosingBalance: item.sysCashClosingBalance,
           cashRcvAmt: item.cashRcvAmt,
-          varience: item.varience
+          varience: item.varience,
+          nestedData,
         });
       }
     });
-
+    console.log(this.expandedRows)
     return Object.keys(groupedData).map((date) => ({
       date,
       cashDetails: groupedData[date].cashDetails,
@@ -73,10 +93,16 @@ export class CashReceivedTrackerComponent implements OnInit {
   }
 
   toggleRow(date: string) {
-    this.expandedRows[date] = !this.expandedRows[date];
+    this.expandedRows[date].isActive = !this.expandedRows[date]?.isActive;
   }
 
+  toggleNestedRow(date: string, managerName: string) {
+    this.expandedRows[date].nested[managerName] = !this.expandedRows[date].nested[managerName];
+  }
   isRowExpanded(date: string): boolean {
-    return this.expandedRows[date]; 
+    return this.expandedRows[date]?.isActive;
+  }
+  isNestedRowExpanded(date: string, managerName: string): boolean {
+    return this.expandedRows[date].nested[managerName];
   }
 }

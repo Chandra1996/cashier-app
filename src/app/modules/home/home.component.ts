@@ -25,9 +25,6 @@ export class HomeComponent implements OnInit {
   }
 
   onTabChange(event: any) {
-    console.log(event);
     this.currentTab = this.tabs[event];
-    console.log(this.currentTab);
-    
   }
 }
